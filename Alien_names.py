@@ -1,4 +1,15 @@
-# - Uses try and except to validate inputs (Look at workbook 8)
+# 201358937 Tonge_Brandon-CA05.py
+# November 2018
+# This program accepts the first and last names of multiple people
+# and then converts then into 'alien' names. Removing any names with no
+# vowels and giving the user the option to delete any names from the list.
+
+## The program contains an empty list as well as a list that has already
+## been populated in the 'alien' function. The populated list is missing
+## the name "Chloe Smyth' which once inputted completes the program giving
+## the correct output as per the specifications. The empty list can also be
+## used and the program will still work as intended but the final output
+## will be off because it relies on a specific list of names.
 
 # Main Function
 def main():
@@ -32,19 +43,30 @@ def main():
 def aliens():
 
     # Complete list for testing - Need to add last actor in the console
-    # actor_names = ["Andrei Stephens", "Harry Venables", "Stephanie Myrah",
-    #                "Dianne Davies", "Yuan Spield", "Ness Helter", "Sadiq Elbahi",
-    #                "Fred Brynn", "Zeng Ergan",]
+    actor_names = ["Andrei Stephens", "Harry Venables", "Stephanie Myrah",
+                   "Dianne Davies", "Yuan Spield", "Ness Helter", "Sadiq Elbahi",
+                   "Fred Brynn", "Zeng Ergan",]
 
     # Create actors name list
-    actor_names = []
+    # actor_names = []
 
     # While loop adding actors names to "actor_name" list
     exit = "Y"
     while (exit != "N"):
         name = input("\nPlease enter the actors first and last name: ")
+        try:
+            test1, test2 = name.split()
+        except:
+            print("\nPlease enter a valid name!")
+            continue
+
+
         actor_names.append(name)
         exit = input("\nDo you want to enter another name? Y/N : ").upper()
+        while (exit != "Y" and exit != "N"):
+            print("\nPlease input a valid choice: ")
+            exit = input("\nDo you want to enter another name? Y/N : ").upper()
+
 
     # Create alien names list
     alien_names = []
@@ -70,12 +92,15 @@ def aliens():
     # print("stop")
 
     # Print out all the alien names
-    print("-Ref-  -Alien Name-")
+    print("\n-Ref-  -Alien Name-")
     for i in range(len(alien_names)):
         print(" ", i, "     ", alien_names[i])
 
     # Ask if user want to delete a name and then run the delete function
-    choice_remove = input("Would you like to delete an name?: Y/N ").upper()
+    choice_remove = input("\nWould you like to delete a name?: Y/N ").upper()
+    while (choice_remove != "Y" and choice_remove != "N"):
+        print("\nPlease input a valid choice: ")
+        choice_remove = input("\nDo you want to delete a name? Y/N : ").upper()
     if choice_remove == "Y":
         alien_names = delete_from_list(alien_names)
 
@@ -100,16 +125,26 @@ def delete_from_list(alien_names):
     # Remove name from the list based on the user input
     choice_remove = "Y"
     while choice_remove == "Y":
-        remove = int(input("Which reference would you like to delete?: "))
+        try:
+            remove = int(input("\nWhich reference would you like to delete?: "))
+            while (remove < 0 or remove > len(alien_names)):
+                remove = int(input("\nPlease enter a number in the reference list: "))
+        except ValueError:
+            print("\nPlease enter a valid integer!")
+            continue
+
 
         alien_names.pop(remove)
 
-        print("-Ref-  -Alien Name-")
+        print("\n-Ref-  -Alien Name-")
 
         for i in range(len(alien_names)):
             print(" ", i, "     ", alien_names[i])
 
-        choice_remove = input("Would you like to remove another name? Y/N :").upper()
+        choice_remove = input("\nWould you like to remove another name? Y/N :").upper()
+        while (choice_remove != "Y" and choice_remove != "N"):
+            print("\nPlease input a valid choice: ")
+            choice_remove = input("\nDo you want to enter another name? Y/N : ").upper()
 
     # Return list to the alien function
     return alien_names
@@ -164,6 +199,7 @@ def final_name(alien_names, actor_names):
     for i in range(len(actor_names)):
         print(" ", i, "     ", actor_names[i])
 
+    main()
 
 
 def extended():
@@ -173,4 +209,3 @@ def extended():
 
 
 main()
-
